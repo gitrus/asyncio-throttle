@@ -1,4 +1,3 @@
-import sys
 import time
 import asyncio
 from collections import deque
@@ -6,6 +5,7 @@ from collections import deque
 import pytest
 
 from asyncio_throttle import Throttler
+
 
 class TestThrottle:
     async def worker(self, throttler, logs):
@@ -17,11 +17,9 @@ class TestThrottle:
         except asyncio.CancelledError:
             pass
 
-    @pytest.mark.parametrize("rate_limit,workers_to_spawn", [
-        (5, 5),
-        (20, 35),
-        (50, 100),
-    ])
+    @pytest.mark.parametrize(
+        "rate_limit,workers_to_spawn", [(5, 5), (20, 35), (50, 100)]
+    )
     @pytest.mark.asyncio
     async def test_rate_limiting(self, rate_limit, workers_to_spawn, event_loop):
         throttler = Throttler(rate_limit)
